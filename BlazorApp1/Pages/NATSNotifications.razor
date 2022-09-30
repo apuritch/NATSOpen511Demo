@@ -1,0 +1,79 @@
+﻿@page "/receivenatsnotifications"
+@implements IDisposable
+@inject NATSNotifierService Notifier
+@inject NATSService Nats
+@using System.Text.Json
+@using Newtonsoft.Json.Linq
+
+<h1>Receive NATS Notifications</h1>
+
+
+<button @onclick="StartNATSListener">Start Nats Listener</button>
+
+<h2>Road Events from Open511 Via NATS Messaging System</h2>
+
+
+<table style="width:100%">
+    <tr>
+        <th>Updated</th>
+        <th>Headline</th>
+        <th>Status</th>
+        <th>Description</th>
+    </tr>
+    @foreach (var roadevent in roadevents)
+    {
+        <tr>
+            <td>@roadevent.updated</td>
+            <td>@roadevent.status</td>
+            <td>@roadevent.headline</td>
+            <td>@roadevent.description</td>
+            <td>
+                <button @onclick="() => roadevents.Remove(roadevent)">
+                    X
+                </button>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@code{
+    List<RoadEvents> roadevents = new()
+    {
+        
+    };
+}
+
+
+
+@code {
+
+    private (string key, string value) lastNotification;
+
+    protected override void OnInitialized()
+    {
+        Notifier.Notify += OnNotify;
+    }
+
+    public async Task OnNotify(string key, string value)
+    {
+        await InvokeAsync(() =>
+        {
+            dynamic data = JObject.Parse(value);
+            roadevents.Add(new RoadEvents() { status = data.status, description =data.description,updated = data.updated, headline = data.headline});
+            StateHasChanged();
+        });
+    }
+
+
+    public void Dispose()
+    {
+        Notifier.Notify -= OnNotify;
+    }
+
+    private async Task StartNATSListener()
+    {
+       await Nats.Start();
+    }
+
+}
