@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["BlazorApp1/BlazorApp1.csproj", "BlazorApp1/"]
-RUN dotnet restore "BlazorApp1/BlazorApp1.csproj"
+COPY ["Open511NATS/Open511NATS.csproj", "Open511NATS/"]
+RUN dotnet restore "Open511NATS/Open511NATS.csproj"
 COPY . .
-WORKDIR "/src/BlazorApp1"
-RUN dotnet build "BlazorApp1.csproj" -c Release -o /app/build
+WORKDIR "/src/Open511NATS"
+RUN dotnet build "Open511NATS.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "BlazorApp1.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Open511NATS.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "BlazorApp1.dll"]
+ENTRYPOINT ["dotnet", "Open511NATS.dll"]

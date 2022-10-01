@@ -1,5 +1,5 @@
-namespace BlazorApp1
-{ 
+namespace Open511NATS.Data
+{
     public class RoadEvents
     {
         public string? updated { get; set; }

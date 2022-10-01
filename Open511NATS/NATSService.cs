@@ -4,7 +4,6 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json;
-using BlazorApp1.Data;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Collections;
@@ -44,7 +43,7 @@ public class NATSService :IDisposable
             //notifier.Update("elapsedCount", args.Message.Data.ToString());
             notifier.Update("elapsedCount", str);
         };
-        IAsyncSubscription s = c.SubscribeAsync("test", h);
+        IAsyncSubscription s = c.SubscribeAsync("roadevents", h);
 
     }
     }

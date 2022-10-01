@@ -4,6 +4,7 @@
 @inject NATSService Nats
 @using System.Text.Json
 @using Newtonsoft.Json.Linq
+@using Open511NATS.Data
 
 <h1>Receive NATS Notifications</h1>
 
@@ -60,7 +61,8 @@
         await InvokeAsync(() =>
         {
             dynamic data = JObject.Parse(value);
-            roadevents.Add(new RoadEvents() { status = data.status, description =data.description,updated = data.updated, headline = data.headline});
+           //roadevents.Add(new RoadEvents() { status = data.status, description =data.description,updated = data.updated, headline = data.headline});
+            roadevents.Insert(0, new RoadEvents() { status = data.status, description = data.description, updated = data.updated, headline = data.headline });
             StateHasChanged();
         });
     }
