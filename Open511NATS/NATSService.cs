@@ -28,6 +28,7 @@ public class NATSService :IDisposable
         this.opts = ConnectionFactory.GetDefaultOptions();
 
         //opts.Url = Environment.GetEnvironmentVariable("NATS_SERVER_CLIENT");
+        //opts.Url = "nats://host.docker.internal:4222";
         opts.Url = "nats://my-nats:4222";
 
 
@@ -42,6 +43,7 @@ public class NATSService :IDisposable
         {
             Console.WriteLine($"worker received {args.Message}");
             string str = Encoding.UTF8.GetString(args.Message.Data, 0, args.Message.Data.Length);
+            notifier.Update("RoadEvents", str);
         };
         IAsyncSubscription s = c.SubscribeAsync("roadevents", h);
 
