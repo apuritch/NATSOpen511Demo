@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using System.Text;
 using System.Collections;
 using Options = NATS.Client.Options;
+using Newtonsoft.Json.Linq;
 
 [DataContract]
 public class NATSService :IDisposable
@@ -16,7 +17,7 @@ public class NATSService :IDisposable
     private readonly ConnectionFactory cf;
     private readonly Options opts;
     private IConnection c;
-
+  
 
     public NATSService(NATSNotifierService notifier)
     {
@@ -25,7 +26,8 @@ public class NATSService :IDisposable
         this.cf = new ConnectionFactory();
         
         this.opts = ConnectionFactory.GetDefaultOptions();
-        opts.Url = "nats://host.docker.internal:4222";
+
+        opts.Url = Environment.GetEnvironmentVariable("NATS_SERVER");
     }
     public async Task Start()
     {
@@ -33,15 +35,10 @@ public class NATSService :IDisposable
         { 
         this.c = cf.CreateConnection(opts);
 
-
-
-        //IConnection c = cf.CreateConnection(opts);
         EventHandler<MsgHandlerEventArgs> h = (sender, args) =>
         {
             Console.WriteLine($"worker received {args.Message}");
             string str = Encoding.UTF8.GetString(args.Message.Data, 0, args.Message.Data.Length);
-            //notifier.Update("elapsedCount", args.Message.Data.ToString());
-            notifier.Update("elapsedCount", str);
         };
         IAsyncSubscription s = c.SubscribeAsync("roadevents", h);
 
