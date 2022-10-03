@@ -21,7 +21,7 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "environmentVariables": {
-        "NATS_SERVER": "nats://host.docker.internal:4222"
+        "NATS_SERVER_CLIENT": "nats://host.docker.internal:4222"
       },
       "publishAllPorts": true,
       "useSSL": true

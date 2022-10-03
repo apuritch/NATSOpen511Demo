@@ -10,6 +10,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<NATSNotifierService>();
 builder.Services.AddSingleton<NATSService>();
 
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

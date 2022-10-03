@@ -27,7 +27,10 @@ public class NATSService :IDisposable
         
         this.opts = ConnectionFactory.GetDefaultOptions();
 
-        opts.Url = Environment.GetEnvironmentVariable("NATS_SERVER");
+        //opts.Url = Environment.GetEnvironmentVariable("NATS_SERVER_CLIENT");
+        opts.Url = "nats://my-nats:4222";
+
+
     }
     public async Task Start()
     {
