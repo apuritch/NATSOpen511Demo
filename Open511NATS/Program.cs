@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Open511NATS.Data;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
